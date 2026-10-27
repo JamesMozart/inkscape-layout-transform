@@ -97,9 +97,9 @@ class LayoutTransform(inkex.EffectExtension):
         if has_scale:
             ox = cx - center_x
             oy = cy - center_y
+            w = self._tension_weights(ox, oy)
             dx = ox * (scale_x - 1.0)
             dy = oy * (scale_y - 1.0)
-            w = self._tension_weights(ox, oy)
             dx *= w
             dy *= w
             total_dx += dx
@@ -111,15 +111,13 @@ class LayoutTransform(inkex.EffectExtension):
         if has_rotate:
             ox = cx - center_x
             oy = cy - center_y
-            cos_a = math.cos(angle_rad)
-            sin_a = math.sin(angle_rad)
+            w = self._tension_weights(ox, oy)
+            cos_a = np.cos(w * angle_rad)
+            sin_a = np.sin(w * angle_rad)
             new_ox = ox * cos_a - oy * sin_a
             new_oy = ox * sin_a + oy * cos_a
             dx = new_ox - ox
             dy = new_oy - oy
-            w = self._tension_weights(ox, oy)
-            dx *= w
-            dy *= w
             total_dx += dx
             total_dy += dy
 
